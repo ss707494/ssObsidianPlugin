@@ -1,4 +1,87 @@
 /* Sets all the text color to red! */
 body {
-    color: red;
+	/*color: red;*/
+}
+
+.ssQueryLinkBox {
+	position: relative;
+}
+
+.ssQueryLinkBox > p {
+	padding: 1px;
+	position: absolute;
+	right: -2px;
+	top: -6px;
+	/*height: 22px;*/
+	line-height: 18px;
+	font-size: 13px;
+	background: rgba(156, 12, 12, 0.4);
+	color: #58e438;
+	margin: 0;
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	border-radius: 2px;
+}
+
+body .workspace .workspace-leaf-content {
+}
+
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content {
+	flex-direction: row-reverse;
+	/*padding-right: var(--header-width) !important;*/
+	/*padding-left: 0 !important;*/
+}
+
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header {
+	height: auto;
+	flex-direction: column;
+	/*left: auto !important;*/
+	/*right: 0 !important;*/
+	/*border-right: none !important;*/
+}
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header .view-header-icon {
+	padding: 5px 6px;
+}
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header .view-header-title-container {
+	padding: 8px 0 40px;
+	display: flex;
+}
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header .view-header-title-container .view-header-title{
+	writing-mode: vertical-lr;
+	padding-right: 0;
+}
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header .view-header-title-container:after {
+	background: transparent;
+	display: none;
+}
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header .view-actions {
+	flex-direction: column;
+	padding: 0;
+}
+body .workspace > .mod-root > .workspace-leaf > .workspace-leaf-content > .view-header .view-actions .view-action {
+	margin: 0;
+	padding: 16px 0;
+	display: grid;
+	align-items: center;
+	justify-items: center;
+}
+
+body .workspace-leaf-content[data-type='markdown'] .view-content {
+	height: 100%;
+}
+
+body .workspace b {
+	height: 1em;
+	width: 30px;
+	overflow: hidden;
+	white-space: nowrap;
+	color: transparent;
+	display: inline-block;
+	border: 1px dotted wheat;
+	border-radius: 2px;
+}
+
+body.is-mobile {
+
 }
