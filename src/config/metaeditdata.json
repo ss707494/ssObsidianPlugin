@@ -1,0 +1,43 @@
+{
+  "ProgressProperties": {
+    "enabled": false,
+    "properties": []
+  },
+  "IgnoredProperties": {
+    "enabled": false,
+    "properties": []
+  },
+  "AutoProperties": {
+    "enabled": true,
+    "properties": [
+      {
+        "name": "type",
+        "choices": [
+          "工作",
+          "学习",
+          "生活",
+          "兴趣"
+        ]
+      },
+      {
+        "name": "state",
+        "choices": [
+          "action",
+          "finish",
+          "top"
+        ]
+      }
+    ]
+  },
+  "EditMode": {
+    "mode": "All Single",
+    "properties": []
+  },
+  "KanbanHelper": {
+    "enabled": false,
+    "boards": []
+  },
+  "UIElements": {
+    "enabled": true
+  }
+}
