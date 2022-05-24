@@ -1,9 +1,10 @@
 // @ts-nocheck
-import {render} from 'preact'
-import * as React from 'preact/compat'
+import React from 'react'
 import {getFileTypeByFile, Table} from './components/Table'
 import {addSsAction} from './utils/utils'
 import {TestBox} from './components/Test'
+import {DataTool} from './components/DataTool'
+import {createRoot} from 'react-dom/client'
 
 export const addRefresh = (app, fn) => {
 	if (app?.ssAction?.renderReactRefreshTool?.list) {
@@ -44,13 +45,18 @@ const comObj = {
 }
 export const renderReact = (props: any = {}, el: HTMLElement) => {
 	const {name} = props
+	const root = createRoot(el)
 	if (name === 'testBox') {
-		render(<TestBox {...props} />, el)
+		root.render(<TestBox {...props} />)
 		return
 	}
 	if (name === 'table') {
-		render(<Table {...props} />, el)
+		root.render(<Table {...props} />)
 		return
 	}
-	render(<Table {...props} />, el)
+	if (name === 'dataTool') {
+		root.render(<DataTool {...props} />)
+		return
+	}
+	root.render(<Table {...props} />)
 }

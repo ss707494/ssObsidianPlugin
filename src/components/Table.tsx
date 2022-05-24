@@ -1,8 +1,9 @@
 // @ts-nocheck
-import * as React from 'preact/compat'
-import {useEffect, useState} from 'preact/compat'
+import React from 'react'
+import {useEffect, useState} from 'react'
 import {Markdown} from '../utils/Markdown'
-import styled from 'styled-components'
+// import styled from 'styled-components'
+import styled from '@emotion/styled';
 import {changeFileType, changeOneMeta, getMetaedit} from '../utils/utils'
 import {addRefresh, refresh} from '../render'
 import {selectDateValue} from '../anki/ankiTools'
@@ -20,7 +21,7 @@ const Box = styled.div`
 	padding-bottom: 8px;
 	align-items: stretch;
 `
-const MarkdownBox = styled.div`
+export const MarkdownBox = styled.div`
 	position: relative;
 
 	.internal-link {
@@ -108,7 +109,7 @@ export const Table = (props: TableProps) => {
 	}, [])
 	return <Box>
 		{pages.map(v => (
-			<>
+			<React.Fragment key={`table${v.file.path}`}>
 				<MarkdownBox>
 					<Markdown content={`[[${v.file.name}]]`}
 							  sourcePath={v.file.path}/>
@@ -151,9 +152,9 @@ export const Table = (props: TableProps) => {
 							 viewBox="0 0 24 24"
 							 fill="none"
 							 stroke="currentColor"
-							 stroke-width="2"
-							 stroke-linecap="round"
-							 stroke-linejoin="round"
+							 strokeWidth="2"
+							 strokeLinecap="round"
+							 strokeLinejoin="round"
 							 className="PenTool">
 							<path d="M12 19l7-7 3 3-7 7-3-3z"></path>
 							<path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
@@ -164,7 +165,7 @@ export const Table = (props: TableProps) => {
 						</svg>
 					</IconButton>
 				</Actions>
-			</>
+			</React.Fragment>
 		))}
 	</Box>
 }

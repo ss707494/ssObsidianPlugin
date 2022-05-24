@@ -1,6 +1,5 @@
-import {useEffect, useRef} from 'preact/compat'
 import {MarkdownRenderer} from 'obsidian'
-import * as React from 'preact/compat';
+import React, {useEffect, useRef} from 'react'
 
 export function Markdown({
 							 content,

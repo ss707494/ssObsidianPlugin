@@ -2,7 +2,6 @@ import esbuild from 'esbuild'
 import process from 'process'
 import builtins from 'builtin-modules'
 import {copy} from 'esbuild-plugin-copy'
-import alias from 'esbuild-plugin-alias'
 
 const banner =
 	`/*
@@ -13,7 +12,6 @@ if you want to view the source, please visit the github repository of this plugi
 
 const prod = (process.argv[2] === 'production')
 
-const rootPath = 'D:/code/ss707494/obsidian/ssObsidianPlugin/node_modules/.pnpm/preact@10.6.6/node_modules/preact/compat/dist/compat.js'
 const outpath = 'D:/ss707494/note/.obsidianPC/plugins/ssPlugin'
 const outpath2 = 'D:/ss707494/note/.obsidianPhone/plugins/ssPlugin'
 
@@ -96,10 +94,6 @@ esbuild.build({
 				// 	to: ['D:/ss707494/note/.obsidianPhone/plugins'],
 				// },
 			],
-		}),
-		alias({
-			'react': rootPath,
-			'react-dom': rootPath,
 		}),
 	],
 }).catch(() => process.exit(1))

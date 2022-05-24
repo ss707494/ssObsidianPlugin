@@ -107,3 +107,7 @@ export const getIconSvg = (name) => {
 export const globalSearch = () => {
 	this.app.internalPlugins.getPluginById('global-search').instance.openGlobalSearch('path:pages')
 }
+
+export const getDataviewApi = () => {
+	return app.plugins.plugins['dataview'].api
+}

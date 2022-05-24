@@ -1,5 +1,5 @@
 // @ts-nocheck
-import * as React from 'preact/compat'
+import React from 'react'
 import {getMetaedit} from '../utils/utils'
 
 export const TestBox = (props: any) => {
