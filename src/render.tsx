@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react'
-import {getFileTypeByFile, Table} from './components/Table'
+import {getFileList, getFileTypeByFile, Table} from './components/Table'
 import {addSsAction} from './utils/utils'
 import {TestBox} from './components/Test'
 import {DataTool} from './components/DataTool'
@@ -32,6 +32,7 @@ export const initRenderReact = (that) => {
 		},
 	)
 	addSsAction(that.app, {
+		getFileList,
 		getFileTypeByFile,
 		renderReactRefreshTool: {
 			list: [],

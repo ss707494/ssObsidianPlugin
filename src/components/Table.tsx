@@ -8,6 +8,7 @@ import {changeFileType, changeOneMeta, getMetaedit} from '../utils/utils'
 import {addRefresh, refresh} from '../render'
 import {selectDateValue} from '../anki/ankiTools'
 import {quickActions} from '../utils/quickActions'
+import moment from 'moment'
 
 type TableProps = {
 	query?: string
@@ -66,6 +67,31 @@ const Button = styled.a`
 const IconButton = styled(Button)`
 	min-width: 30px;
 `
+export const getFileList = (path) => {
+  const arr = Promise.all(app.vault.getAllLoadedFiles().filter(i => i.extension === 'md' && i.parent.path.includes(path)).map(v => ({
+    file: {
+      ...v,
+      name: v.basename,
+      folder: v.parent.path,
+    },
+  })).map(v => new Promise(resolve => {
+    app.plugins.plugins['metaedit'].api.getPropertiesInFile(v.file.path).then(meta => {
+      resolve({
+        ...v,
+        ...meta.reduce((pre, cur) => ({
+          ...pre,
+          [cur.key]: cur.content,
+        }), {}),
+        meta,
+      })
+    })
+  })))
+  arr.__proto__.filter = function (filterFun) {
+    return this.then(res => res.filter(filterFun))
+  }
+  return arr
+}
+
 export const getFileTypeByFile = (item) => {
 	return item?.file?.folder?.replace('pages/', '')
 }
@@ -76,10 +102,10 @@ export const Table = (props: TableProps) => {
 	const dataViewApi = app.plugins.plugins.dataview.api
 	const [pages, setPages] = useState([])
 	const getData = async () => {
-		const app: any = window.app
-		const {properties} = getMetaedit(app)
-		const dataViewApi = app.plugins.plugins.dataview.api
 		let pages = await (getDataFn ? getDataFn(dataViewApi) : dataViewApi.pages(query ?? '"pages"'))
+    if (props.ss) {
+      console.log(pages)
+    }
 		setPages(Array.from(pages)
 			.filter(v => {
 				return Object.keys(filter).every(key => {
@@ -99,13 +125,16 @@ export const Table = (props: TableProps) => {
 					return false
 				})
 			})
-			.sort((a, b) => b.file.ctime.ts - a.file.ctime.ts),
+			.sort((a,b) => moment(b.date).valueOf() - moment(a.date).valueOf()),
 		)
+
 	}
 
 	useEffect(() => {
-		getData()
-		addRefresh(app, getData)
+    (async () => {
+      await getData()
+      addRefresh(app, getData)
+    })()
 	}, [])
 	return <Box>
 		{pages.map(v => (
