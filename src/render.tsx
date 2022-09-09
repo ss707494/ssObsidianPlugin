@@ -5,6 +5,7 @@ import {addSsAction} from './utils/utils'
 import {TestBox} from './components/Test'
 import {DataTool} from './components/DataTool'
 import {createRoot} from 'react-dom/client'
+import seedrandom from 'seedrandom'
 
 export const addRefresh = (app, fn) => {
 	if (app?.ssAction?.renderReactRefreshTool?.list) {
@@ -38,6 +39,7 @@ export const initRenderReact = (that) => {
 			list: [],
 			refresh: () => refresh(that.app),
 		},
+		seedrandom,
 	})
 }
 const comObj = {

@@ -67,6 +67,11 @@ const Button = styled.a`
 const IconButton = styled(Button)`
 	min-width: 30px;
 `
+const Header = styled.div`
+	font-size: large;
+	font-weight: bold;
+	padding: 12px 0;
+`
 export const getFileList = (path) => {
   const arr = Promise.all(app.vault.getAllLoadedFiles().filter(i => i.extension === 'md' && i.parent.path.includes(path)).map(v => ({
     file: {
@@ -96,16 +101,13 @@ export const getFileTypeByFile = (item) => {
 	return item?.file?.folder?.replace('pages/', '')
 }
 export const Table = (props: TableProps) => {
-	const {query, filter = {}, getDataFn, hideFileType, isReview} = props
+	const {query, filter = {}, getDataFn, hideFileType, isReview, title = ''} = props
 	const app: any = window.app
 	const {properties} = getMetaedit(app)
 	const dataViewApi = app.plugins.plugins.dataview.api
 	const [pages, setPages] = useState([])
 	const getData = async () => {
 		let pages = await (getDataFn ? getDataFn(dataViewApi) : dataViewApi.pages(query ?? '"pages"'))
-    if (props.ss) {
-      console.log(pages)
-    }
 		setPages(Array.from(pages)
 			.filter(v => {
 				return Object.keys(filter).every(key => {
@@ -136,65 +138,68 @@ export const Table = (props: TableProps) => {
       addRefresh(app, getData)
     })()
 	}, [])
-	return <Box>
-		{pages.map(v => (
-			<React.Fragment key={`table${v.file.path}`}>
-				<MarkdownBox>
-					<Markdown content={`[[${v.file.name}]]`}
-							  sourcePath={v.file.path}/>
-				</MarkdownBox>
-				<Actions>
-					{isReview ? <>
-							<Button
-								onClick={async () => {
-									await selectDateValue(v.file.path)
-									refresh(app)
-								}}
-							>
-								{v.review}
-							</Button>
-						</> :
-						<>
-							<Button
-								onClick={async () => {
-									await changeOneMeta(v.file.path, properties.find(v => v.name === 'type'), app)
-									refresh(app)
-								}}
-							>
-								{v.type}
-							</Button>
-							{!hideFileType && <Button
-								onClick={async () => {
-									await changeFileType(v.file.path, app)
-									refresh(app)
-								}}
-							>{getFileTypeByFile(v)}</Button>}
-						</>
-					}
-					<IconButton
-						className={'ssPluginBtn'}
-						onClick={async () => quickActions(v.file.path)}
-					>
-						<svg xmlns="http://www.w3.org/2000/svg"
-							 width="17"
-							 height="17"
-							 viewBox="0 0 24 24"
-							 fill="none"
-							 stroke="currentColor"
-							 strokeWidth="2"
-							 strokeLinecap="round"
-							 strokeLinejoin="round"
-							 className="PenTool">
-							<path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-							<path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-							<path d="M2 2l7.586 7.586"></path>
-							<circle cx="11"
-									cy="11"
-									r="2"></circle>
-						</svg>
-					</IconButton>
-				</Actions>
-			</React.Fragment>
-		))}
-	</Box>
+	return (pages.length ? <>
+		<Header>{title}</Header>
+		<Box>
+			{pages.map(v => (
+				<React.Fragment key={`table${v.file.path}`}>
+					<MarkdownBox>
+						<Markdown content={`[[${v.file.name}]]`}
+								  sourcePath={v.file.path}/>
+					</MarkdownBox>
+					<Actions>
+						{isReview ? <>
+								<Button
+									onClick={async () => {
+										await selectDateValue(v.file.path)
+										refresh(app)
+									}}
+								>
+									{v.review}
+								</Button>
+							</> :
+							<>
+								<Button
+									onClick={async () => {
+										await changeOneMeta(v.file.path, properties.find(v => v.name === 'type'), app)
+										refresh(app)
+									}}
+								>
+									{v.type}
+								</Button>
+								{!hideFileType && <Button
+									onClick={async () => {
+										await changeFileType(v.file.path, app)
+										refresh(app)
+									}}
+								>{getFileTypeByFile(v)}</Button>}
+							</>
+						}
+						<IconButton
+							className={'ssPluginBtn'}
+							onClick={async () => quickActions(v.file.path)}
+						>
+							<svg xmlns="http://www.w3.org/2000/svg"
+								 width="17"
+								 height="17"
+								 viewBox="0 0 24 24"
+								 fill="none"
+								 stroke="currentColor"
+								 strokeWidth="2"
+								 strokeLinecap="round"
+								 strokeLinejoin="round"
+								 className="PenTool">
+								<path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+								<path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+								<path d="M2 2l7.586 7.586"></path>
+								<circle cx="11"
+										cy="11"
+										r="2"></circle>
+							</svg>
+						</IconButton>
+					</Actions>
+				</React.Fragment>
+			))}
+		</Box>
+	</> : '')
 }

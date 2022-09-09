@@ -20,6 +20,7 @@ specifiers:
   obsidian: latest
   react: ^18.1.0
   react-dom: ^18.1.0
+  seedrandom: ^3.0.5
   styled-components: ^5.3.5
   tslib: 2.3.1
   typescript: 4.4.4
@@ -31,6 +32,7 @@ dependencies:
   '@emotion/styled': 11.8.1_btguaf77hpuxici4esujjeifki
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
+  seedrandom: 3.0.5
 
 devDependencies:
   '@codemirror/state': 0.19.9
@@ -45,7 +47,7 @@ devDependencies:
   esbuild: 0.13.12
   esbuild-plugin-alias: 0.2.1
   esbuild-plugin-copy: 1.2.1_esbuild@0.13.12
-  obsidian: 0.14.8
+  obsidian: 0.16.0_q23xvt2p3odm64xfkkqkcapqtm
   styled-components: 5.3.5_ef5jwxihqo6n7gxfmzogljlgcm
   tslib: 2.3.1
   typescript: 4.4.4
@@ -1143,21 +1145,24 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /moment/2.29.2:
-    resolution: {integrity: sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==}
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     dev: true
 
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
 
-  /obsidian/0.14.8:
-    resolution: {integrity: sha512-CQz+B2HSbhGVEBwZBL3rPl29ruOBmEhCbBmW7PIILnnRh6fFFvYy3kZLHVTUidzvRGZnEW/mQ7n9LXeJCp2a/Q==}
+  /obsidian/0.16.0_q23xvt2p3odm64xfkkqkcapqtm:
+    resolution: {integrity: sha512-KnQu1CntLz/EqA50W0zwlCqMgLbvMMfW2nmNQV4aMPW/aSYyjmnRMEwO0rAThQGhJPabDm2okVUSeXLctC/aMA==}
+    peerDependencies:
+      '@codemirror/state': ^6.0.0
+      '@codemirror/view': ^6.0.0
     dependencies:
       '@codemirror/state': 0.19.9
       '@codemirror/view': 0.19.47
       '@types/codemirror': 0.0.108
-      moment: 2.29.2
+      moment: 2.29.4
     dev: true
 
   /parent-module/1.0.1:
@@ -1260,6 +1265,10 @@ packages:
     resolution: {integrity: sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /seedrandom/3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
     dev: false
 
   /semver/7.3.5:
