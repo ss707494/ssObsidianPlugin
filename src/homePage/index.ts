@@ -26,7 +26,7 @@ const readViewModeFromFrontmatterAndToggle = async (
 	app: App,
 	statusBarItemEl: any,
 ) => {
-	if (leaf.getViewState().type === 'markdown' && !['Home', 'Graph view'].includes(leaf.getDisplayText())) {
+	if (leaf.getViewState().type === 'markdown' && !['首页Home', 'Graph view'].includes(leaf.getDisplayText())) {
 		const state = leaf.view.getState()
 		const mode = leaf.app.vault.config.defaultViewMode || 'source'
 		if (state.mode !== mode) {
@@ -49,12 +49,14 @@ const readViewModeFromFrontmatterAndToggle = async (
 			document.querySelector('.cm-fold-indicator').click()
 		}
 	}
-	statusBarItemEl.setText(`${app.workspace.activeLeaf.view.file.parent.name}`)
+	if (app.workspace.activeLeaf?.view?.file?.parent?.name) {
+		statusBarItemEl.setText(`${app.workspace.activeLeaf.view.file.parent.name}`)
+	}
 }
 
 export const openHomepage = async (app: App) => {
 	await app.workspace.openLinkText(
-		'/lib/Home', '', false, {active: true},
+		'/lib/首页Home', '', false, {active: true},
 	)
 	const leaf = app.workspace.activeLeaf
 	const state = leaf.view.getState()

@@ -6,6 +6,7 @@ import {TestBox} from './components/Test'
 import {DataTool} from './components/DataTool'
 import {createRoot} from 'react-dom/client'
 import seedrandom from 'seedrandom'
+import {DidaTool} from './components/Dida'
 
 export const addRefresh = (app, fn) => {
 	if (app?.ssAction?.renderReactRefreshTool?.list) {
@@ -25,10 +26,10 @@ export const refresh = (app) => {
 export const initRenderReact = (that) => {
 	that.registerPriorityCodeblockPostProcessor('ssReact', -100, async (source, el, ctx) => {
 			try {
-				eval(`var params = ${source}`)
-				renderReact(params, el)
+				eval(`app.__params = ${source}`)
+				renderReact(app.__params, el)
 			} catch (e) {
-				console.log(e)
+				// console.log(e)
 			}
 		},
 	)
@@ -55,6 +56,10 @@ export const renderReact = (props: any = {}, el: HTMLElement) => {
 	}
 	if (name === 'table') {
 		root.render(<Table {...props} />)
+		return
+	}
+	if (name === 'didaTool') {
+		root.render(<DidaTool {...props} />)
 		return
 	}
 	if (name === 'dataTool') {

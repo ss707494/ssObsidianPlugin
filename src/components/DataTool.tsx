@@ -7,7 +7,7 @@ import moment from 'moment'
 
 const getData = (pathName: string) => {
 	const dataApi = getDataviewApi()
-	return dataApi.pages(`"pages/工具/${pathName}/data"`)
+	return dataApi.pages(`"lib/工具/${pathName}/data"`)
 }
 export const DataTool = (props: any) => {
 	const [data, setData] = useState([])

@@ -72,8 +72,18 @@ const Header = styled.div`
 	font-weight: bold;
 	padding: 12px 0;
 `
+
+const getFileByPath = (path) => {
+	if (Array.isArray(path)) {
+		return path.reduce((pre, cur) => [
+			...pre,
+			...(app.vault.getAbstractFileByPath(cur)?.children ?? []),
+		], [])?.filter(v => !v.children)
+	}
+	return app.vault.getAbstractFileByPath(path).children?.filter(v => !v.children)
+}
 export const getFileList = (path) => {
-  const arr = Promise.all(app.vault.getAllLoadedFiles().filter(i => i.extension === 'md' && i.parent.path.includes(path)).map(v => ({
+  const arr = Promise.all(getFileByPath(path).map(v => ({
     file: {
       ...v,
       name: v.basename,
