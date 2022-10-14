@@ -25,13 +25,23 @@ ${finishDate}:
 		})
 	})
 }
+const getHistoryData = async () => {
+	const historyDir = app.vault.getAbstractFileByPath('lib/工具/打卡/data')?.children?.filter(v => v.name !== moment().format('YYYY_MM_DD'))
+	return historyDir.reduce(async (pre, cur) => {
+		const hisList = await getFileList(cur.path) as DoDataItem[]
+		return [
+			...(await pre),
+			...hisList.filter(v => !v.finishDate),
+		]
+	}, Promise.resolve([]))
+}
 const getData = async () => {
 	const folderStr = `lib/工具/打卡/data/${moment().format('YYYY_MM_DD')}`
 	const typeList = (await getFileList('lib/工具/打卡')) as TypeItem[]
 	if (!await app.vault.exists(folderStr)) {
 		await app.vault.createFolder(folderStr)
 		await createDayFile(folderStr, typeList)
-		await new Promise(resolve => setTimeout(resolve, 1000))
+		await new Promise(resolve => setTimeout(resolve, 3000))
 	}
 	const doDataList = await getFileList(folderStr) as DoDataItem[]
 	return {
@@ -41,11 +51,13 @@ const getData = async () => {
 }
 export const DidaTool = (props: any) => {
 	const [doDataList, setDoDataList] = useState<DoDataItem[]>([])
+	const [hisDataList, setHisDataList] = useState<DoDataItem[]>([])
+	const [showHisDetail, showHisDetailSet] = useState(false)
 	const [typeList, setTypeList] = useState<TypeItem[]>([])
 	const {metaApi} = getMetaedit(app)
 
-	const finishData = doDataList.reduce((previousValue, currentValue) => {
-		if (currentValue.finishDate) {
+	const dealListDataCount = (doDataList) => {
+		return doDataList.reduce((previousValue, currentValue) => {
 			return {
 				...previousValue,
 				[currentValue.type]: {
@@ -55,9 +67,10 @@ export const DidaTool = (props: any) => {
 					number: (previousValue[currentValue.type]?.number ?? 0) + 1,
 				},
 			}
-		}
-		return previousValue
-	}, {})
+		}, {})
+	}
+	const finishData = dealListDataCount(doDataList.filter(v => v.finishDate))
+	const hisDataObjCount = dealListDataCount(hisDataList)
 	const getDataRefresh = () => {
 		getData().then(({
 							doDataList,
@@ -66,6 +79,10 @@ export const DidaTool = (props: any) => {
 			setDoDataList(doDataList)
 			setTypeList(typeList)
 		})
+		setTimeout(async () => {
+			const hisDataList = await getHistoryData() as DoDataItem[]
+			setHisDataList(hisDataList)
+		}, 0)
 	}
 
 	useEffect(() => {
@@ -88,18 +105,17 @@ export const DidaTool = (props: any) => {
 		<div className={css`
 			padding: 8px 0;
 		`}>
-			打卡
 			<span className={css`
-				margin-left: 4px;
+				margin-left: 1px;
 			`}>已完成:
 				{Object.keys(finishData).map(key => <span
 					key={`key${key}`}
 					onClick={() => revert(key)}
 					className={css`
-						padding: 0 4px;
+						padding: 0 2px;
 					`}><span className={css`
 					color: aqua;
-				`}>{finishData[key]?.number}</span>**{finishData[key]?.type}</span>)}
+				`}>{finishData[key]?.number}</span>{finishData[key]?.type}</span>)}
 			</span>
 		</div>
 		{typeList.map(type => <div
@@ -115,5 +131,34 @@ export const DidaTool = (props: any) => {
 					{type.type}
 				</a>)}
 		</div>)}
+		{!!hisDataList?.length ? <div
+			className={css`
+				display: grid;
+				${showHisDetail ? 'grid-template-columns: repeat(5, 1fr);' : ''}
+			`}
+		>
+			{!showHisDetail ? <div
+				onClick={() => showHisDetailSet(true)}
+			>历史未完成:
+				{Object.keys(hisDataObjCount).map(key => <span
+					key={`key${key}`}
+					onClick={() => revert(key)}
+					className={css`
+						padding: 0 2px;
+					`}><span className={css`
+					color: aqua;
+				`}>{hisDataObjCount[key]?.number}</span>{hisDataObjCount[key]?.type}</span>)}
+			</div> : <>
+				<div
+					onClick={() => showHisDetailSet(false)}
+				>历史</div>
+				{hisDataList.filter(doData => !doData.finishDate).map(doData =>
+					<a
+						onClick={() => doFinish(doData.file)}
+						key={`his${doData.file?.path}`}>
+						{doData.type}
+					</a>)}
+			</>}
+		</div> : null}
 	</div>
 }
