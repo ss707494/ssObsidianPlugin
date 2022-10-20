@@ -93,7 +93,7 @@ export const initAnki = (app: any, that: any) => {
 	})
 	that.addCommand({
 		id: 'ss-plugins-replaceSelection',
-		icon: 'Eye',
+		icon: 'fullscreen',
 		name: 'replaceSelection',
 		callback: () => {
 			replaceSelection(app)
@@ -101,7 +101,7 @@ export const initAnki = (app: any, that: any) => {
 	})
 	that.addCommand({
 		id: 'ss-plugins-changeReviewDate',
-		icon: 'AlarmClock',
+		icon: 'calendar-with-checkmark',
 		name: 'changeReviewDate',
 		callback: () => {
 			selectDateValue()

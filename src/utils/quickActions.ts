@@ -21,7 +21,7 @@ const actionString = {
 export const initQuickActions = (that) => {
 	that.addCommand({
 		id: 'ss-plugins-quickActions',
-		icon: 'Hammer',
+		icon: 'wrench-screwdriver-glyph',
 		name: 'quickActions',
 		callback: () => {
 			quickActions()

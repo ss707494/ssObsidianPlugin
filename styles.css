@@ -85,3 +85,9 @@ body .workspace b {
 body.is-mobile {
 
 }
+
+.view-content .ssPluginLeftAction {
+	position: fixed;
+	bottom: 80px;
+	right: 40px;
+}

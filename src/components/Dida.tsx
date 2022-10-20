@@ -4,6 +4,7 @@ import {getMetaedit} from '../utils/utils'
 import {css} from '@emotion/css'
 import {getFileList} from './Table'
 import moment from 'moment'
+import {addRefresh} from '../render'
 
 type TypeItem = {
 	type: string
@@ -87,6 +88,7 @@ export const DidaTool = (props: any) => {
 
 	useEffect(() => {
 		getDataRefresh()
+		addRefresh(app, getDataRefresh)
 	}, [])
 
 	const doFinish = async (file) => {
@@ -126,6 +128,7 @@ export const DidaTool = (props: any) => {
 			key={`list${type.type}`}>
 			{doDataList.filter(doData => doData.type === type.type && !doData.finishDate).map(doData =>
 				<a
+					className={css`padding: 3px 0`}
 					onClick={() => doFinish(doData.file)}
 					key={`${type}${doData.file?.name}`}>
 					{type.type}
@@ -138,6 +141,7 @@ export const DidaTool = (props: any) => {
 			`}
 		>
 			{!showHisDetail ? <div
+				className={css`padding: 3px 0`}
 				onClick={() => showHisDetailSet(true)}
 			>历史未完成:
 				{Object.keys(hisDataObjCount).map(key => <span
@@ -150,10 +154,12 @@ export const DidaTool = (props: any) => {
 				`}>{hisDataObjCount[key]?.number}</span>{hisDataObjCount[key]?.type}</span>)}
 			</div> : <>
 				<div
+					className={css`padding: 3px 0`}
 					onClick={() => showHisDetailSet(false)}
 				>历史</div>
 				{hisDataList.filter(doData => !doData.finishDate).map(doData =>
 					<a
+						className={css`padding: 3px 0`}
 						onClick={() => doFinish(doData.file)}
 						key={`his${doData.file?.path}`}>
 						{doData.type}

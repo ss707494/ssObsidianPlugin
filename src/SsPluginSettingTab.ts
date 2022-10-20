@@ -1,7 +1,7 @@
 import {App, PluginSettingTab, Setting} from 'obsidian'
 import SsPlugin from '../main'
 import {GenericTextSuggester} from './utils/genericTextSuggester'
-import {iconList} from './utils/icon'
+import {newIcons} from './utils/icon'
 
 export class SsPluginSettingTab extends PluginSettingTab {
 	plugin: SsPlugin
@@ -33,30 +33,44 @@ export class SsPluginSettingTab extends PluginSettingTab {
 						},
 					)
 				new Setting(containerEl)
-					.setName(`icon num ${index + 1}`)
-					.setDesc('chose icon')
+					.setName(`说明 num ${index + 1}`)
+					.setDesc('chose desc')
 					.addText(textComponent => {
 							// @ts-ignore
-							new GenericTextSuggester(this.app, textComponent.inputEl, iconList);
 							textComponent
-								.setValue(this.plugin.settings.leftAction[index].icon)
+								.setValue(this.plugin.settings.leftAction[index].desc)
 								.onChange(async (value) => {
-									this.plugin.settings.leftAction[index].icon = value
+									this.plugin.settings.leftAction[index].desc = value
 									await this.plugin.saveSettings()
 								})
 						},
 					)
+				// new Setting(containerEl)
+				// 	.setName(`icon num ${index + 1}`)
+				// 	.setDesc('chose icon')
+				// 	.addText(textComponent => {
+				// 			// @ts-ignore
+				// 			new GenericTextSuggester(this.app, textComponent.inputEl, iconList);
+				// 			textComponent
+				// 				.setValue(this.plugin.settings.leftAction[index].icon)
+				// 				.onChange(async (value) => {
+				// 					this.plugin.settings.leftAction[index].icon = value
+				// 					await this.plugin.saveSettings()
+				// 				})
+				// 		},
+				// 	)
 			})
 		}
 		new Setting(containerEl)
 			.addButton(component => {
-				component.setIcon('Plus')
+				component.setIcon('plus-with-circle')
 					.onClick(async () => {
 						this.plugin.settings.leftAction = [
 							...(this.plugin.settings?.leftAction || []),
 							{
 								icon: '',
 								command: '',
+								desc: '',
 							}
 						]
 						await this.plugin.saveSettings()
@@ -66,7 +80,7 @@ export class SsPluginSettingTab extends PluginSettingTab {
 	}
 
 	async hide() {
-		this.plugin.settings.leftAction = this.plugin.settings?.leftAction?.filter(v => v.command && v.icon)
+		this.plugin.settings.leftAction = this.plugin.settings?.leftAction?.filter(v => v.command && v.desc)
 		await this.plugin.saveSettings()
 
 		return super.hide()

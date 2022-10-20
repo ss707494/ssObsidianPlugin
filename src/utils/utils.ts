@@ -99,8 +99,10 @@ export const getIconSvg = (name) => {
 	const btn = new ButtonComponent(cache)
 	btn.setIcon(name)
 	const svg = btn.buttonEl.querySelector('svg')
-	svg.setAttr('width', 17)
-	svg.setAttr('height', 17)
+	if (svg) {
+		svg.setAttr('width', 17)
+		svg.setAttr('height', 17)
+	}
 	return svg
 }
 

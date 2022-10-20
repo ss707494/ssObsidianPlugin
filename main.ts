@@ -11,6 +11,7 @@ import {initQuickActions} from './src/utils/quickActions'
 export type LeftAction = {
 	icon: string
 	command: string
+	desc: string
 }
 
 interface SsPluginSettings {
@@ -48,7 +49,7 @@ export default class SsPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'ss-plugins-queryLink',
-			icon: 'Link2',
+			icon: 'link',
 			name: 'ss-plugins-queryLink',
 			callback: () => {
 				queryLink()
@@ -56,7 +57,7 @@ export default class SsPlugin extends Plugin {
 		})
 		this.addCommand({
 			id: 'ss-plugins-rename',
-			icon: 'Edit2',
+			icon: 'document',
 			name: 'quick rename',
 			callback: () => {
 				renameFileQuick()
@@ -64,7 +65,7 @@ export default class SsPlugin extends Plugin {
 		})
 		this.addCommand({
 			id: 'ss-plugins-refresh',
-			icon: 'RefreshCcw',
+			icon: 'switch',
 			name: 'refresh',
 			callback: () => {
 				refresh(app)
