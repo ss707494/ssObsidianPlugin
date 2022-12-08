@@ -45,7 +45,7 @@ const readViewModeFromFrontmatterAndToggle = async (
 				}
 			}, 300)
 		}
-		if (app.isMobile) {
+		if (app.isMobile && !leaf.getViewState().state.file.includes('/data/') && !leaf.getViewState().state.file.includes('lib/工具')) {
 			document.querySelector('.cm-fold-indicator').click()
 		}
 	}

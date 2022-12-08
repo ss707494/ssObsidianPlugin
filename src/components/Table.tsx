@@ -9,6 +9,7 @@ import {addRefresh, refresh} from '../render'
 import {selectDateValue} from '../anki/ankiTools'
 import {quickActions} from '../utils/quickActions'
 import moment from 'moment'
+import {pick} from 'licia'
 
 type TableProps = {
 	query?: string
@@ -73,6 +74,8 @@ const Header = styled.div`
 	padding: 12px 0;
 `
 
+const calcStoreKey = (title) => `tableDataStore${title}`
+
 const getFileByPath = (path) => {
 	if (Array.isArray(path)) {
 		return path.reduce((pre, cur) => [
@@ -117,8 +120,16 @@ export const Table = (props: TableProps) => {
 	const dataViewApi = app.plugins.plugins.dataview.api
 	const [pages, setPages] = useState([])
 	const getData = async () => {
+		if (title) {
+			try {
+				const cacheData = JSON.parse(localStorage.getItem(calcStoreKey(title)))
+				if (cacheData?.length) {
+					setPages(cacheData)
+				}
+			} catch (e) {}
+		}
 		let pages = await (getDataFn ? getDataFn(dataViewApi) : dataViewApi.pages(query ?? '"pages"'))
-		setPages(Array.from(pages)
+		const output = Array.from(pages)
 			.filter(v => {
 				return Object.keys(filter).every(key => {
 					if (filter[key] === '!' && !v[key]) {
@@ -137,9 +148,14 @@ export const Table = (props: TableProps) => {
 					return false
 				})
 			})
-			.sort((a,b) => moment(b.date).valueOf() - moment(a.date).valueOf()),
-		)
-
+			.sort((a,b) => moment(b.date).valueOf() - moment(a.date).valueOf())
+		if (title) {
+			localStorage.setItem(calcStoreKey(title), JSON.stringify(output?.map(item => ({
+				...pick(item, ['review', 'type']),
+				file: pick(item.file, ['name', 'path', 'folder'])
+			}))))
+		}
+		setPages(output)
 	}
 
 	useEffect(() => {

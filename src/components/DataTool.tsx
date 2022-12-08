@@ -2,36 +2,36 @@ import React, {useEffect, useState} from 'react'
 import {getDataviewApi} from '../utils/utils'
 import {css, cx} from '@emotion/css'
 import {Markdown} from '../utils/Markdown'
-import {MarkdownBox} from './Table'
+import {getFileList, MarkdownBox} from './Table'
 import moment from 'moment'
 
-const getData = (pathName: string) => {
-	const dataApi = getDataviewApi()
-	return dataApi.pages(`"lib/工具/${pathName}/data"`)
+const getData = async (pathName: string) => {
+	return await getFileList(`lib/工具/${pathName}/data`)
 }
 export const DataTool = (props: any) => {
+	const {pathName, footFn, column} = props
+	const [primaryKey, ...restColumn] = column ?? ['date', 'record', 'money']
 	const [data, setData] = useState([])
 
 	const dataApi = getDataviewApi()
-	const {pathName, footFn} = props
 	useEffect(() => {
-		const data = getData(pathName)
-		setData(data)
+		getData(pathName).then(data => {
+			setData(data)
+		})
 	}, [])
 
 	return <div>
 		<div className={css`
 		display: grid;
 		grid-auto-flow: row;
-		grid-template-columns: 2fr 2fr 1fr max-content;
+		grid-template-columns: repeat(${column?.length ?? 3}, minmax(max-content, 1fr));
 		align-items: stretch;
 		grid-row-gap: 8px;
 		padding-bottom: 8px;
-
 		.link {
 			position: relative;
 			cursor: pointer;
-
+			padding-left: 4px;
 			&:after {
 				content: '';
 				height: 1px;
@@ -49,12 +49,10 @@ export const DataTool = (props: any) => {
 					<MarkdownBox className={css`&&&:after {
 					width: 100%
 				}`}>
-						<Markdown content={`[${d.date}](${d.file.path})`}
+						<Markdown content={`[${d[primaryKey]}](${d.file.path})`}
 								  sourcePath={d.file.path}/>
 					</MarkdownBox>
-					<a className={cx('link')}>{d.record}</a>
-					<a className={cx('link')}>{d.money}</a>
-					<a className={cx('link')}></a>
+					{restColumn.map((columnKey: any) => <a key={`column${columnKey}`} className={cx('link')}>{d[columnKey]}</a>)}
 				</React.Fragment>
 			))
 		}</div>
